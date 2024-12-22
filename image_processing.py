@@ -94,7 +94,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 def upload_to_cloudinary(image):
     try:
         image_buffer = BytesIO()
-        image.save(image_buffer, format="PNG")
+        image.save(image_buffer, format="PNG", optimize=True)
         image_buffer.seek(0)
 
         upload_url = "https://api.cloudinary.com/v1_1/djbamsijq/image/upload"
@@ -111,3 +111,5 @@ def upload_to_cloudinary(image):
     except requests.exceptions.RequestException as e:
         print("Error uploading image to Cloudinary:", e)
         raise e
+    finally:
+        image_buffer.close()
