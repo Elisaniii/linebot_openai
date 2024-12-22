@@ -37,7 +37,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_f
             line = ''
             for word in words:
                 test_line = f"{line} {word}".strip()
-                test_width = draw.textlength(test_line, font=font)
+                test_width = draw.textbbox((0, 0), test_line, font=font)[2]
                 if test_width <= max_width:
                     line = test_line
                 else:
@@ -47,12 +47,15 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_f
             return lines
 
         # 將文字換行
-        wrapped_text = wrap_text(text, font, image_width * 0.9)
+        max_text_width = image_width * 0.9  # 文字最大寬度為圖片寬度的90%
+        wrapped_text = wrap_text(text, font, max_text_width)
+        
         text_height = draw.textbbox((0, 0), "A", font=font)[3] - draw.textbbox((0, 0), "A", font=font)[1]  # 單行文字高度
         total_text_height = len(wrapped_text) * text_height
 
         # 計算整體文字的垂直起始位置，確保居中
-        current_y = image_height * 0.8
+        #current_y = image_height * 0.8
+        current_y = (image_height - total_text_height) / 2
         
         for line in wrapped_text:
             text_width = draw.textbbox((0, 0), line, font=font)[2] - draw.textbbox((0, 0), line, font=font)[0]
