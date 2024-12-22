@@ -27,12 +27,25 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 def GPT_response(text):
-    # 接收回應
-    response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
-    print(response)
-    # 重組回應
-    answer = response['choices'][0]['text'].replace('。','')
+    try:
+         #呼叫 OpenAI API
+        response=openai.chat.completion.create(
+            model="ft:gpt-3.5-turbo-0125:personal::Ag2qoEbN",
+            messages=[
+                {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在10字內。"},
+                {"role": "user", "content": text}
+     ],
+    temperature=0.5
+  )
+    print(""OpenAI API 回應成功:", response)
+    
+    # 正確提取內容
+    answer = response.choices[0].message.content.strip()
     return answer
+    
+    except Exception as e:
+        print("Error in GPT_response:", e)
+        return "抱歉，目前無法提供回應，請稍後再試。"
 
 
 # 監聽所有來自 /callback 的 Post Request
