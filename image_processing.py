@@ -24,21 +24,16 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 
     try:
         # 根據圖片大小動態調整字體大小（取圖片高度的 1/10 作為字體大小）
-        font_size = max(image_height // 10, 20)  # 字體大小至少為 20
+        font_size = max(image_height // 10, 80)  # 字體大小至少為 20
         try:
             font = ImageFont.truetype(font_path, font_size)
         except:
             font = ImageFont.load_default()
         # 計算文字大小和位置
-        text_size = draw.textsize(text, font=font)
-        text_position = ((image_width - text_size[0]) / 2, (image_height - text_size[1]) / 2)
-        
-    #text_bbox = draw.textbbox((0, 0), text, font=font)
-    #text_width = text_bbox[2] - text_bbox[0]
-    #text_height = text_bbox[3] - text_bbox[1]
-    #image_width, image_height = image.size
-    #text_x = (image_width - text_width) / 2
-    #text_y = image_height - text_height - 100
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_height = text_bbox[3] - text_bbox[1]
+        text_position = ((image_width - text_width) / 2, (image_height - text_height) / 2)
 
         for dx in range(-outline_width, outline_width + 1):
             for dy in range(-outline_width, outline_width + 1):
@@ -50,7 +45,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
                         fill=outline_color
                     )
 
-        draw.text((text_x, text_y), text, font=font, fill=text_fill)
+        draw.text(text_position, text, font=font, fill=text_fill)
     except Exception as e:
         print("Error in add_text_to_image:", e)
         raise e
