@@ -63,7 +63,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
         total_text_height = len(wrapped_text) * text_height
 
         # 計算整體文字的垂直起始位置，確保居中
-        current_y = (image_height - total_text_height) / 2
+        current_y = image_height * 0.8
         
         for line in wrapped_text:
             text_size = draw.textsize(line, font=font)
