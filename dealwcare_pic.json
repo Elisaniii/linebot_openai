@@ -1,10 +1,12 @@
 {
-    "buddha": [
+    #buddha
+    "慈祥款": [
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853478/wat-phra-that-doi-suthep-temple-in-chiang-mai-2023-11-27-05-18-05-utc_cku7vw.png",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853478/closeup-of-a-small-wooden-statue-of-buddha-of-happ-2023-11-27-04-49-49-utc_kbqnll.png",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853477/beautiful-giant-white-buddha-in-the-mekong-delta-2024-12-10-00-32-15-utc_nabuz0.png"
     ],
-    "flowers": [
+    #flowers
+    "基本款": [
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853748/flowers_0011_an-old-woman-in-a-sunflower-field-wearing-an-embro-2024-08-08-01-53-42-utc_bvwszl.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853748/flowers_0001_sunflower-at-sunset-2023-11-27-05-28-29-utc_ufkya8.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853747/flowers_0004_red-torch-ginger-local-flower-in-tropical-rainfore-2024-10-16-16-18-03-utc_v06bjg.jpg",
@@ -20,20 +22,23 @@
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853745/flowers_0003_single-flower-in-female-hand-beautiful-tulip-dra-2024-12-08-01-42-07-utc_dr4tke.jpg"
 
     ],
-    "hands": [
+    #hands
+    "溫馨款": [
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853958/hands_0003_im-not-going-anywhere-2024-05-30-19-54-47-utc_qkd3ma.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853958/hands_0000_you-make-me-look-forward-to-every-new-day-2024-09-04-02-45-12-utc_ubvqnl.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853957/hands_0002_man-holds-woman-hand-while-standing-in-a-green-gar-2024-02-08-15-02-47-utc_nqshmp.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734853957/hands_0001_multiethnic-friends-helping-hand-outdoor-copy-spa-2023-11-27-05-34-00-utc_zlukko.jpg"
     ],
-    "landscape": [
+    #landscape
+    "風景款": [
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854007/landscape_0002_dramatic-sunset-over-the-manger-at-uffington-in-ox-2024-10-18-05-35-15-utc_grrl88.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854006/landscape_0001_images-from-the-kingdom-of-denmark-2023-11-27-05-21-09-utc_kan2vx.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854006/landscape_0004_aerial-view-of-bright-green-agricultural-farm-fiel-2024-12-06-13-00-08-utc_xuzdwu.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854006/landscape_0005_a-view-of-a-beautiful-country-landscape-of-green-f-2024-05-03-20-31-38-utc_q6zy0h.jpg",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854006/landscape_0003_cluster-of-vibrant-red-lanterns-hanging-from-the-b-2023-11-27-05-27-57-utc_knnbhg.jpg"
     ],
-    "new_year": [
+    #newyear
+    "佳節款": [
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854055/newyear_0000_portrait-of-two-chinese-children-in-traditional-ch-2024-10-18-04-49-20-utc_ytfoho.png",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854055/newyear_0001_portrait-of-a-cute-chinese-girl-in-traditional-clo-2024-10-16-11-45-14-utc_dedo93.png",
         "https://res.cloudinary.com/djbamsijq/image/upload/v1734854054/newyear_0005_%E5%9C%96%E5%B1%A4-0_iwrrme.png",
