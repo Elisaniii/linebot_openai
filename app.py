@@ -81,8 +81,8 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
             del user_states[user_id]
             return
-        else:
-            response_text = "請輸入有效的圖片類型！"
+    else:
+        response_text = "請輸入有效的圖片類型！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
 
 if __name__ == "__main__":
