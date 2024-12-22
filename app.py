@@ -105,3 +105,9 @@ def index():
 # 啟動 Flask 應用
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
+import psutil
+
+def check_memory_usage():
+    memory = psutil.virtual_memory()
+    print(f"記憶體使用: {memory.percent}%")
