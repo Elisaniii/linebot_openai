@@ -34,14 +34,13 @@ def GPT_response(text):
             messages=[
                 {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在10字內。"},
                 {"role": "user", "content": text}
-     ],
-    temperature=0.5
-  )
-    print("OpenAI API 回應成功:", response)
-    
-    # 正確提取內容
-    answer = response['choices'][0]['message']['content'].strip()
-    return answer
+             ],
+            temperature=0.5
+          )
+        print("OpenAI API 回應成功:", response)
+        # 正確提取內容
+        answer = response['choices'][0]['message']['content'].strip()
+        return answer
     
     except Exception as e:
         print("Error in GPT_response:", e)
