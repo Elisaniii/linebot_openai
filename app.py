@@ -67,7 +67,7 @@ def handle_message(event):
     try:
 
         if user_id not in user_states:
-            response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（buddha, flowers, hands, landscape, new year）"
+            response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（慈祥款/基本款/佳節款/風景款/溫馨款）"
             user_states[user_id] = "waiting_for_category"
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
             return
