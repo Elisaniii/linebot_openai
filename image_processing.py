@@ -17,7 +17,7 @@ def get_random_image(category):
     return Image.open(BytesIO(response.content)).convert("RGB")
 
 # 添加文字到圖片
-def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_fill="blue", outline_color="yellow", outline_width=3):
+def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=80, text_fill="blue", outline_color="yellow", outline_width=3):
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(font_path, font_size)
 
