@@ -73,16 +73,16 @@ def handle_message(event):
             # 調用 GPT 生成回應
             gpt_response = GPT_response("長輩問我：「怎麼還不結婚？」")
         
-        #生成圖片
-        image = get_random_image(user_message)
-        image = add_text_to_image(image, response_text)
-        image_url = upload_to_cloudinary(image)
+            #生成圖片
+            image = get_random_image(user_message)
+            image = add_text_to_image(image, response_text)
+            image_url = upload_to_cloudinary(image)
 
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
-        del user_states[user_id]
-        return
-    else:
-        response_text = "請輸入有效的圖片類型！"
+            line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
+            del user_states[user_id]
+            return
+        else:
+            response_text = "請輸入有效的圖片類型！"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
 
 import os
