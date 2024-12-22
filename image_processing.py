@@ -4,6 +4,10 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 
+IMAGE_WIDTH = 800
+IMAGE_HEIGHT = 800
+PADDING = 20
+
 # 讀取圖片分類 JSON 文件
 with open("dealwcare_pic.json", "r") as file:
     image_urls = json.load(file)
@@ -20,7 +24,6 @@ def get_random_image(category):
 def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_fill="blue", outline_color="yellow", outline_width=3, padding=20):
     try:
         draw = ImageDraw.Draw(image)
-        image_width, image_height = image.size
 
         # 初始化字體
         try:
@@ -33,40 +36,39 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_f
         def wrap_text(text, font, max_width):
             """將文字根據最大寬度自動換行"""
             lines = []
-            words = text.split(' ')
             current_line = ''
             
-            for word in words:
-                test_line = f"{current_line} {word}".strip() if current_line else word
-                test_width = draw.textlength(test_line, font=font)
+            for char in text:
+                test_line = current_line + char
+                test_width = draw.textbbox((0, 0), test_line, font=font)[2] - draw.textbbox((0, 0), test_line, font=font)[0]
                 
                 if test_width <= max_width:
                     current_line = test_line
                 else:
                     lines.append(current_line)
-                    current_line = word  # 開始新的一行
-                    
+                    current_line = char  # 新的一行從當前字開始
+            
             if current_line:
                 lines.append(current_line)  # 添加最後一行
             
             return lines
 
-        # 將文字換行
-        max_text_width = image_width - (2 * padding)
-        #max_text_width = image_width * 0.8  # 文字最大寬度為圖片寬度的90%
+        # 設定最大寬度
+        max_text_width = IMAGE_WIDTH - (2 * PADDING)
+        
+        # 自動換行
         wrapped_text = wrap_text(text, font, max_text_width)
-        text_height = draw.textbbox((0, 0), "A", font=font)[3] - draw.textbbox((0, 0), "A", font=font)[1]  # 單行文字高度
+        text_height = draw.textbbox((0, 0), "A", font=font)[3] - draw.textbbox((0, 0), "A", font=font)[1]
         total_text_height = len(wrapped_text) * text_height + (len(wrapped_text) - 1) * 5
 
-        # 計算整體文字的垂直起始位置，確保居中
-        #current_y = image_height * 0.8
-        current_y = (image_height - total_text_height) / 2
+        # 垂直居中
+        current_y = (IMAGE_HEIGHT - total_text_height) / 2
         
         for line in wrapped_text:
             text_width = draw.textbbox((0, 0), line, font=font)[2] - draw.textbbox((0, 0), line, font=font)[0]
             #text_x = padding
-            text_x = max(padding, (image_width - text_width) / 2)
-            text_x = min(image_width - text_width - padding, text_x)
+            text_x = max(PADDING, (IMAGE_WIDTH - text_width) / 2) 
+            text_x = min(IMAGE_WIDTH - text_width - PADDING, text_x)
 
             # 如果文字總寬度小於最大寬度，將其居中顯示（但仍考慮 padding）
             #if text_width < max_text_width:
