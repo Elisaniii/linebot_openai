@@ -19,7 +19,6 @@ def get_random_image(category):
 # 添加文字到圖片
 def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", outline_color="yellow", outline_width=3):
     draw = ImageDraw.Draw(image)
-    #font = ImageFont.truetype(font_path, font_size)
     image_width, image_height = image.size
 
     try:
@@ -29,26 +28,66 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
             font = ImageFont.truetype(font_path, font_size)
         except:
             font = ImageFont.load_default()
-        # 計算文字大小和位置
-        text_bbox = draw.textbbox((0, 0), text, font=font)
-        text_width = text_bbox[2] - text_bbox[0]
-        text_height = text_bbox[3] - text_bbox[1]
-        text_x=(image_width - text_width) / 2  # X 軸居中
-        text_y = image_height * 0.9  # Y 軸設置為圖片高度的 1/10
+        
+        while True:
+            text_bbox = draw.textbbox((0, 0), text, font=font)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_height = text_bbox[3] - text_bbox[1]
+            
+            if text_width < image_width * 0.9 and text_height < image_height * 0.8:
+                break
+            font_size -= 2  # 每次縮小 2px
+            if font_size < 10:  # 防止字體過小
+                raise ValueError("無法將文字適配到圖片中！")
+            font = ImageFont.truetype(font_path, font_size)
+        
+        # 自動換行
+        def wrap_text(text, font, max_width):
+            """將文字根據最大寬度自動換行"""
+            lines = []
+            words = text.split(' ')
+            line = ''
+            for word in words:
+                test_line = f"{line} {word}".strip()
+                test_width = draw.textlength(test_line, font=font)
+                if test_width <= max_width:
+                    line = test_line
+                else:
+                    lines.append(line)
+                    line = word
+            lines.append(line)
+            return lines
 
-        for dx in range(-outline_width, outline_width + 1):
-            for dy in range(-outline_width, outline_width + 1):
-                if dx != 0 or dy != 0:
-                    draw.text(
-                        (text_x + dx, text_y + dy),
-                        text,
-                        font=font,
-                        fill=outline_color
-                    )
-        draw.text((text_x, text_y), text, font=font, fill=text_fill)
+        # 將文字換行
+        wrapped_text = wrap_text(text, font, image_width * 0.9)
+        total_text_height = len(wrapped_text) * text_height
+
+        # 計算整體文字的垂直起始位置，確保居中
+        current_y = (image_height - total_text_height) / 2
+        
+        for line in wrapped_text:
+            text_size = draw.textsize(line, font=font)
+            text_x = (image_width - text_size[0]) / 2
+
+            # 繪製文字邊框
+            for dx in range(-outline_width, outline_width + 1):
+                for dy in range(-outline_width, outline_width + 1):
+                    if dx != 0 or dy != 0:
+                        draw.text(
+                            (text_x + dx, current_y + dy),
+                            line,
+                            font=font,
+                            fill=outline_color
+                        )
+
+            # 繪製主要文字
+            draw.text((text_x, current_y), line, font=font, fill=text_fill)
+            current_y += text_height  # 移動到下一行位置
+
     except Exception as e:
         print("Error in add_text_to_image:", e)
         raise e
+
     return image
 
 # 上傳圖片到 Cloudinary
