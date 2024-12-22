@@ -24,7 +24,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 
     try:
         # 根據圖片大小動態調整字體大小（取圖片高度的 1/10 作為字體大小）
-        font_size = max(image_height // 10, 80)  # 字體大小至少為 20
+        font_size = max(image_height // 10, 20)  # 字體大小至少為 20
         try:
             font = ImageFont.truetype(font_path, font_size)
         except:
@@ -34,7 +34,7 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
         text_x=(image_width - text_width) / 2  # X 軸居中
-        text_y = image_height * 0.1  # Y 軸設置為圖片高度的 1/10
+        text_y = image_height * 0.9  # Y 軸設置為圖片高度的 1/10
 
         for dx in range(-outline_width, outline_width + 1):
             for dy in range(-outline_width, outline_width + 1):
