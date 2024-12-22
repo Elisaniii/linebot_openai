@@ -62,8 +62,10 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    app.logger.info("handle_message called")
     user_id = event.source.user_id
     user_message = event.message.text.strip().lower()
+    app.logger.info(f"user_id: {user_id}, user_message: {user_message}")
 
     if user_id not in user_states:
         response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（buddha, flowers, hands, landscape, new year）"
