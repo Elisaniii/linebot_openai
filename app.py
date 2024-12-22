@@ -6,10 +6,7 @@ import openai
 from image_processing import get_random_image, add_text_to_image, upload_to_cloudinary
 
 #======python的函數庫==========
-import tempfile, os
-import datetime
-import openai
-import time
+import os
 import traceback
 #======python的函數庫==========
 
@@ -31,7 +28,7 @@ def GPT_response(text):
             model="ft:gpt-3.5-turbo-0125:personal::Ag2qoEbN",
             messages=[
                 {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在10字內。"},
-                {"role": "user", "content": "長輩問我：「怎麼還不結婚？」，我不知道怎麼回答！請幫我！"}
+                {"role": "user", "content": text}
             ],
             temperature=0.5
         )
@@ -67,26 +64,44 @@ def handle_message(event):
     user_message = event.message.text.strip().lower()
     app.logger.info(f"user_id: {user_id}, user_message: {user_message}")
 
-    if user_id not in user_states:
-        response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（buddha, flowers, hands, landscape, new year）"
-        user_states[user_id] = "waiting_for_category"
-    elif user_states[user_id] == "waiting_for_category":
-         if user_message in ["buddha", "flowers", "hands", "landscape", "new year"]:
-            # 調用 GPT 生成回應
-            gpt_response = GPT_response("長輩問我：「怎麼還不結婚？」")
-        
-            #生成圖片
-            image = get_random_image(user_message)
-            image = add_text_to_image(image, response_text)
-            image_url = upload_to_cloudinary(image)
+    try:
 
-            line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
-            del user_states[user_id]
+        if user_id not in user_states:
+            response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（buddha, flowers, hands, landscape, new year）"
+            user_states[user_id] = "waiting_for_category"
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
             return
-    else:
-        response_text = "請輸入有效的圖片類型！"
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
+        
+        if user_states[user_id] == "waiting_for_category":
+            if user_message in ["buddha", "flowers", "hands", "landscape", "new year"]:
+                # 調用 GPT 生成回應
+                gpt_response = GPT_response(user_message)
+        
+                #生成圖片
+                image = get_random_image(user_message)
+                image = add_text_to_image(image, response_text)
+                image_url = upload_to_cloudinary(image)
+
+                line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
+                del user_states[user_id]
+                return
+        else:
+            response_text = "請輸入有效的圖片類型！"
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
+            return
+    except Exception as e:
+            app.logger.error(f"Error in handle_message: {traceback.format_exc()}")
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='發生錯誤，請稍後再試！')
+        )
         return
 
+# 根目錄測試路徑
+@app.route("/", methods=['GET'])
+def index():
+    return "LINE Bot is running successfully!", 200
+
+# 啟動 Flask 應用
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
