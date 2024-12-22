@@ -27,7 +27,7 @@ def GPT_response(text):
         response = openai.ChatCompletion.create(
             model="ft:gpt-3.5-turbo-0125:personal::Ag2qoEbN",
             messages=[
-                {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在10字內。"},
+                {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在8字內。"},
                 {"role": "user", "content": text}
             ],
             temperature=0.5
@@ -67,7 +67,7 @@ def handle_message(event):
     try:
 
         if user_id not in user_states:
-            response_text = "沒問題！我來幫你解決。請先確認想要的圖片類型！（慈祥款/基本款/佳節款/風景款/溫馨款）"
+            response_text = "沒問題！我來幫你想。請先確認想要的回答風格：基本款/慈祥款/佳節款/風景款/溫馨款"
             user_states[user_id] = "waiting_for_category"
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
             return
