@@ -59,7 +59,8 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_f
         
         for line in wrapped_text:
             text_width = draw.textbbox((0, 0), line, font=font)[2] - draw.textbbox((0, 0), line, font=font)[0]
-            text_x = (image_width - text_width) / 2
+            text_x = max(padding, (image_width - text_width) / 2)
+            text_x = min(image_width - text_width - padding, text_x)
 
             # 繪製文字邊框
             for dx in range(-outline_width, outline_width + 1):
