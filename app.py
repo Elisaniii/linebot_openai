@@ -73,7 +73,7 @@ def handle_message(event):
             return
         
         if user_states[user_id] == "waiting_for_category":
-            if user_message in ["buddha", "flowers", "hands", "landscape", "new year"]:
+            if user_message in ["慈祥款", "基本款", "溫馨款", "風景款", "佳節款"]:
                 # 調用 GPT 生成回應
                 gpt_response = GPT_response(user_message)
         
