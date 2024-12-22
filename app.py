@@ -79,7 +79,7 @@ def handle_message(event):
         
                 #生成圖片
                 image = get_random_image(user_message)
-                image = add_text_to_image(image, response_text)
+                image = add_text_to_image(image, gpt_response)
                 image_url = upload_to_cloudinary(image)
 
                 line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
