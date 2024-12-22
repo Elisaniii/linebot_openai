@@ -29,18 +29,6 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
         except:
             font = ImageFont.load_default()
         
-        while True:
-            text_bbox = draw.textbbox((0, 0), text, font=font)
-            text_width = text_bbox[2] - text_bbox[0]
-            text_height = text_bbox[3] - text_bbox[1]
-            
-            if text_width < image_width * 0.9 and text_height < image_height * 0.8:
-                break
-            font_size -= 2  # 每次縮小 2px
-            if font_size < 10:  # 防止字體過小
-                raise ValueError("無法將文字適配到圖片中！")
-            font = ImageFont.truetype(font_path, font_size)
-        
         # 自動換行
         def wrap_text(text, font, max_width):
             """將文字根據最大寬度自動換行"""
@@ -60,14 +48,15 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 
         # 將文字換行
         wrapped_text = wrap_text(text, font, image_width * 0.9)
+        text_height = draw.textbbox((0, 0), "A", font=font)[3]  # 單行文字高度
         total_text_height = len(wrapped_text) * text_height
 
         # 計算整體文字的垂直起始位置，確保居中
         current_y = image_height * 0.8
         
         for line in wrapped_text:
-            text_size = draw.textsize(line, font=font)
-            text_x = (image_width - text_size[0]) / 2
+            text_width = draw.textlength(line, font=font)
+            text_x = (image_width - text_width) / 2
 
             # 繪製文字邊框
             for dx in range(-outline_width, outline_width + 1):
@@ -93,23 +82,21 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 # 上傳圖片到 Cloudinary
 def upload_to_cloudinary(image):
     try:
-        image_buffer = BytesIO()
-        image.save(image_buffer, format="PNG", optimize=True)
-        image_buffer.seek(0)
+        with BytesIO() as image_buffer:
+            image.save(image_buffer, format="PNG", optimize=True)
+            image_buffer.seek(0)
 
-        upload_url = "https://api.cloudinary.com/v1_1/djbamsijq/image/upload"
-        payload = {"upload_preset": "linebot_upload"}
-        files = {"file": image_buffer}
-        
-        response = requests.post(upload_url, data=payload, files=files)
-        response.raise_for_status()  # 確保請求成功
-        
-        image_url = response.json().get("secure_url")
-        print("Uploaded Image URL:", image_url)
-        return image_url
+            upload_url = "https://api.cloudinary.com/v1_1/djbamsijq/image/upload"
+            payload = {"upload_preset": "linebot_upload"}
+            files = {"file": image_buffer}
+            
+            response = requests.post(upload_url, data=payload, files=files)
+            response.raise_for_status()
+            
+            image_url = response.json().get("secure_url")
+            print("Uploaded Image URL:", image_url)
+            return image_url
 
     except requests.exceptions.RequestException as e:
         print("Error uploading image to Cloudinary:", e)
         raise e
-    finally:
-        image_buffer.close()
