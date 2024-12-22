@@ -37,7 +37,7 @@ def GPT_response(text):
      ],
     temperature=0.5
   )
-    print(""OpenAI API 回應成功:", response)
+    print("OpenAI API 回應成功:", response)
     
     # 正確提取內容
     answer = response.choices[0].message.content.strip()
