@@ -90,10 +90,10 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
             return
     except Exception as e:
-            app.logger.error(f"Error in handle_message: {traceback.format_exc()}")
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text='發生錯誤，請稍後再試！')
+        app.logger.error(f"Error in handle_message: {traceback.format_exc()}")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='發生錯誤，請稍後再試！')
         )
         return
 
