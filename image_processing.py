@@ -3,6 +3,7 @@ import random
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+gunicorn app:app --timeout 120 --workers 2 --threads 2 --bind 0.0.0.0:$PORT
 
 # 讀取圖片分類 JSON 文件
 with open("dealwcare_pic.json", "r") as file:
