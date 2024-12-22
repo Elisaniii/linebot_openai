@@ -42,8 +42,8 @@ def upload_to_cloudinary(image):
     image.save(image_buffer, format="PNG")
     image_buffer.seek(0)
 
-    upload_url = "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload"
-    payload = {"upload_preset": "YOUR_UPLOAD_PRESET"}
+    upload_url = "https://api.cloudinary.com/v1_1/djbamsijq/image/upload"
+    payload = {"upload_preset": "linebot_upload"}
     files = {"file": image_buffer}
     response = requests.post(upload_url, data=payload, files=files)
     return response.json().get("secure_url")
