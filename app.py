@@ -27,7 +27,7 @@ def GPT_response(text):
         response = openai.ChatCompletion.create(
             model="ft:gpt-3.5-turbo-0125:personal::Ag2qoEbN",
             messages=[
-                {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在8字內。"},
+                {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答中不要包含圖片分類名稱。語句要在10字內。"},
                 {"role": "user", "content": text}
             ],
             temperature=0.5
