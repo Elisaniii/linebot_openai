@@ -3,7 +3,6 @@ import random
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
-gunicorn app:app --timeout 120 --workers 2 --threads 2 --bind 0.0.0.0:$PORT
 
 # 讀取圖片分類 JSON 文件
 with open("dealwcare_pic.json", "r") as file:
@@ -18,16 +17,16 @@ def get_random_image(category):
     return Image.open(BytesIO(response.content)).convert("RGB")
 
 # 添加文字到圖片
-def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", outline_color="yellow", outline_width=3):
-    draw = ImageDraw.Draw(image)
-    image_width, image_height = image.size
-
+def add_text_to_image(image, text, font_path="BiauKai.ttf", font_size=60, text_fill="blue", outline_color="yellow", outline_width=3):
     try:
-        # 根據圖片大小動態調整字體大小（取圖片高度的 1/10 作為字體大小）
-        font_size = max(image_height // 10, 20)  # 字體大小至少為 20
+        draw = ImageDraw.Draw(image)
+        image_width, image_height = image.size
+
+        # 初始化字體
         try:
             font = ImageFont.truetype(font_path, font_size)
-        except:
+        except IOError:
+            print(f"Warning: 字體檔案 '{font_path}' 無法找到，使用預設字體。")
             font = ImageFont.load_default()
         
         # 自動換行
@@ -49,14 +48,14 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
 
         # 將文字換行
         wrapped_text = wrap_text(text, font, image_width * 0.9)
-        text_height = draw.textbbox((0, 0), "A", font=font)[3]  # 單行文字高度
+        text_height = draw.textbbox((0, 0), "A", font=font)[3] - draw.textbbox((0, 0), "A", font=font)[1]  # 單行文字高度
         total_text_height = len(wrapped_text) * text_height
 
         # 計算整體文字的垂直起始位置，確保居中
         current_y = image_height * 0.8
         
         for line in wrapped_text:
-            text_width = draw.textlength(line, font=font)
+            text_width = draw.textbbox((0, 0), line, font=font)[2] - draw.textbbox((0, 0), line, font=font)[0]
             text_x = (image_width - text_width) / 2
 
             # 繪製文字邊框
