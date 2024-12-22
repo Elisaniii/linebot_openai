@@ -33,19 +33,19 @@ def add_text_to_image(image, text, font_path="BiauKai.ttf", text_fill="blue", ou
         text_bbox = draw.textbbox((0, 0), text, font=font)
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
-        text_position = ((image_width - text_width) / 2, (image_height - text_height) / 2)
+        text_x=(image_width - text_width) / 2  # X 軸居中
+        text_y = image_height * 0.1  # Y 軸設置為圖片高度的 1/10
 
         for dx in range(-outline_width, outline_width + 1):
             for dy in range(-outline_width, outline_width + 1):
                 if dx != 0 or dy != 0:
                     draw.text(
-                        (text_position[0] + dx, text_position[1] + dy),
+                        (text_x + dx, text_y + dy),
                         text,
                         font=font,
                         fill=outline_color
                     )
-
-        draw.text(text_position, text, font=font, fill=text_fill)
+        draw.text((text_x, text_y), text, font=font, fill=text_fill)
     except Exception as e:
         print("Error in add_text_to_image:", e)
         raise e
