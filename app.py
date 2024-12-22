@@ -83,7 +83,8 @@ def handle_message(event):
             return
     else:
         response_text = "請輸入有效的圖片類型！"
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
+        
+line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response_text))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
