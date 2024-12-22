@@ -29,7 +29,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 def GPT_response(text):
     try:
          #呼叫 OpenAI API
-        response=openai.chat.completion.create(
+        response = openai.ChatCompletion.create(
             model="ft:gpt-3.5-turbo-0125:personal::Ag2qoEbN",
             messages=[
                 {"role": "system", "content": "你是一個講話有點刻薄但又不失禮貌的男同志，回答的目的是要讓長輩不要再煩了，要真切且搞笑。回答的語句要在10字內。"},
@@ -40,7 +40,7 @@ def GPT_response(text):
     print("OpenAI API 回應成功:", response)
     
     # 正確提取內容
-    answer = response.choices[0].message.content.strip()
+    answer = response['choices'][0]['message']['content'].strip()
     return answer
     
     except Exception as e:
